@@ -46,7 +46,7 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  RELEASE_IMAGE: docker.io/piphi/piphi-network-kaiterra-api
+  RELEASE_IMAGE: piphinetwork/kaiterra-api
   RELEASE_REGISTRY_KIND: dockerhub
   DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME != '' && secrets.DOCKERHUB_USERNAME || secrets.DOCKER_USERNAME }}
   DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN != '' && secrets.DOCKERHUB_TOKEN || secrets.DOCKER_PASSWORD }}
