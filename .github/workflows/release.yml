@@ -1,0 +1,70 @@
+name: Release
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install --upgrade pip
+
+      - run: python -m pip install -e .[dev]
+      - run: python scripts/validate.py
+      - run: pytest
+      - run: python scripts/validate.py
+      - name: Read manifest release metadata
+        id: manifest
+        shell: bash
+        run: |
+          python - <<'PY' >> "$GITHUB_OUTPUT"
+          import json
+          from pathlib import Path
+          manifest = json.loads(Path("manifest.json").read_text())
+          image = manifest.get("runtime", {}).get("linux", {}).get("container", {}).get("image") or manifest.get("image")
+          image = image or ""
+          first_segment = image.split("/", 1)[0]
+          if image.startswith("ghcr.io/"):
+              registry_kind = "ghcr"
+          elif image.startswith("docker.io/") or ("/" in image and "." not in first_segment and ":" not in first_segment):
+              registry_kind = "dockerhub"
+          else:
+              registry_kind = "unsupported"
+          print(f"version={manifest.get('version', '')}")
+          print(f"image={image}")
+          print(f"registry_kind={registry_kind}")
+          PY
+      - name: Validate release registry
+        if: steps.manifest.outputs.registry_kind == 'unsupported'
+        run: |
+          echo "Unsupported registry image: ${{ steps.manifest.outputs.image }}"
+          echo "Use ghcr.io/org/image:tag, docker.io/org/image:tag, or org/image:tag."
+          exit 1
+      - run: docker build -t "${{ steps.manifest.outputs.image }}" .
+      - name: Log in to GitHub Container Registry
+        if: steps.manifest.outputs.registry_kind == 'ghcr' && github.event_name == 'push'
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Log in to Docker Hub
+        if: steps.manifest.outputs.registry_kind == 'dockerhub' && github.event_name == 'push'
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Push image
+        if: steps.manifest.outputs.registry_kind != 'unsupported' && github.event_name == 'push'
+        run: docker push "${{ steps.manifest.outputs.image }}"
