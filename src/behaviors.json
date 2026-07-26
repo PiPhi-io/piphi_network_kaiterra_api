@@ -39,7 +39,10 @@
           "label": "Monitor is connected",
           "type": "boolean",
           "capability": "sensor.connected",
-          "operators": ["eq", "neq"],
+          "operators": [
+            "eq",
+            "neq"
+          ],
           "runtime": {
             "source": "state",
             "field": "connected",
@@ -71,7 +74,13 @@
             }
           ],
           "capability": "sensor.temperature_c",
-          "operators": [">", ">=", "<", "<=", "eq"],
+          "operators": [
+            ">",
+            ">=",
+            "<",
+            "<=",
+            "eq"
+          ],
           "runtime": {
             "source": "state",
             "field": "temperature_c",
@@ -103,7 +112,13 @@
             }
           ],
           "capability": "sensor.co2_ppm",
-          "operators": [">", ">=", "<", "<=", "eq"],
+          "operators": [
+            ">",
+            ">=",
+            "<",
+            "<=",
+            "eq"
+          ],
           "runtime": {
             "source": "state",
             "field": "co2_ppm",
@@ -146,7 +161,13 @@
             }
           ],
           "capability": "sensor.humidity_percent",
-          "operators": [">", ">=", "<", "<=", "eq"],
+          "operators": [
+            ">",
+            ">=",
+            "<",
+            "<=",
+            "eq"
+          ],
           "runtime": {
             "source": "state",
             "field": "humidity_percent",
@@ -178,7 +199,13 @@
             }
           ],
           "capability": "sensor.pm1_ug_m3",
-          "operators": [">", ">=", "<", "<=", "eq"],
+          "operators": [
+            ">",
+            ">=",
+            "<",
+            "<=",
+            "eq"
+          ],
           "runtime": {
             "source": "state",
             "field": "pm1_ug_m3",
@@ -210,7 +237,13 @@
             }
           ],
           "capability": "sensor.pm25_ug_m3",
-          "operators": [">", ">=", "<", "<=", "eq"],
+          "operators": [
+            ">",
+            ">=",
+            "<",
+            "<=",
+            "eq"
+          ],
           "runtime": {
             "source": "state",
             "field": "pm25_ug_m3",
@@ -242,7 +275,13 @@
             }
           ],
           "capability": "sensor.pm10_ug_m3",
-          "operators": [">", ">=", "<", "<=", "eq"],
+          "operators": [
+            ">",
+            ">=",
+            "<",
+            "<=",
+            "eq"
+          ],
           "runtime": {
             "source": "state",
             "field": "pm10_ug_m3",
@@ -274,7 +313,13 @@
             }
           ],
           "capability": "sensor.tvoc_ppb",
-          "operators": [">", ">=", "<", "<=", "eq"],
+          "operators": [
+            ">",
+            ">=",
+            "<",
+            "<=",
+            "eq"
+          ],
           "runtime": {
             "source": "state",
             "field": "tvoc_ppb",
@@ -306,7 +351,13 @@
             }
           ],
           "capability": "sensor.ozone_ppb",
-          "operators": [">", ">=", "<", "<=", "eq"],
+          "operators": [
+            ">",
+            ">=",
+            "<",
+            "<=",
+            "eq"
+          ],
           "runtime": {
             "source": "state",
             "field": "ozone_ppb",
@@ -338,7 +389,13 @@
             }
           ],
           "capability": "sensor.api_rate_limit_remaining",
-          "operators": ["<", "<=", ">", ">=", "eq"],
+          "operators": [
+            "<",
+            "<=",
+            ">",
+            ">=",
+            "eq"
+          ],
           "runtime": {
             "source": "state",
             "field": "api_rate_limit_remaining",
@@ -370,7 +427,13 @@
             }
           ],
           "capability": "sensor.api_latency_ms",
-          "operators": [">", ">=", "<", "<=", "eq"],
+          "operators": [
+            ">",
+            ">=",
+            "<",
+            "<=",
+            "eq"
+          ],
           "runtime": {
             "source": "state",
             "field": "api_latency_ms",
@@ -395,7 +458,10 @@
             "command": "refresh"
           },
           "targeting": {
-            "modes": ["picked_devices", "by_integration"],
+            "modes": [
+              "picked_devices",
+              "by_integration"
+            ],
             "minTargets": 1,
             "maxTargets": 1
           },
@@ -410,6 +476,9 @@
           },
           "ui": {
             "group": "do_this"
+          },
+          "safety": {
+            "riskLevel": "low"
           }
         },
         {
@@ -421,7 +490,9 @@
             "command": "sync_cloud"
           },
           "targeting": {
-            "modes": ["by_integration"],
+            "modes": [
+              "by_integration"
+            ],
             "minTargets": 0,
             "maxTargets": 0
           },
@@ -436,11 +507,17 @@
           },
           "ui": {
             "group": "do_this"
+          },
+          "safety": {
+            "riskLevel": "low"
           }
         }
       ],
       "targeting": {
-        "modes": ["picked_devices", "by_integration"],
+        "modes": [
+          "picked_devices",
+          "by_integration"
+        ],
         "supportsGroups": false,
         "supportsRooms": false
       },
@@ -557,7 +634,9 @@
             },
             "target": {
               "mode": "selection",
-              "configIds": ["{{configId}}"]
+              "configIds": [
+                "{{configId}}"
+              ]
             },
             "parameters": {},
             "failure": {
@@ -603,5 +682,53 @@
       }
     }
   ],
-  "behaviorSchemaVersion": "integration.behaviors.v2"
+  "behaviorSchemaVersion": "integration.behaviors.v2",
+  "telemetry": {
+    "capabilityMappings": [
+      {
+        "nativeMetric": "api_latency_ms",
+        "capability": "sensor.api_latency_ms"
+      },
+      {
+        "nativeMetric": "api_rate_limit_remaining",
+        "capability": "sensor.api_rate_limit_remaining"
+      },
+      {
+        "nativeMetric": "co2_ppm",
+        "capability": "sensor.co2_ppm"
+      },
+      {
+        "nativeMetric": "connected",
+        "capability": "sensor.connected"
+      },
+      {
+        "nativeMetric": "humidity_percent",
+        "capability": "sensor.humidity_percent"
+      },
+      {
+        "nativeMetric": "ozone_ppb",
+        "capability": "sensor.ozone_ppb"
+      },
+      {
+        "nativeMetric": "pm10_ug_m3",
+        "capability": "sensor.pm10_ug_m3"
+      },
+      {
+        "nativeMetric": "pm1_ug_m3",
+        "capability": "sensor.pm1_ug_m3"
+      },
+      {
+        "nativeMetric": "pm25_ug_m3",
+        "capability": "sensor.pm25_ug_m3"
+      },
+      {
+        "nativeMetric": "temperature_c",
+        "capability": "sensor.temperature_c"
+      },
+      {
+        "nativeMetric": "tvoc_ppb",
+        "capability": "sensor.tvoc_ppb"
+      }
+    ]
+  }
 }
