@@ -6,11 +6,7 @@ from piphi_network_kaiterra_api.main import app
 
 
 def test_runtime_implements_contract_routes() -> None:
-    routes = {
-        route.path
-        for route in app.routes
-        if hasattr(route, "path")
-    }
+    routes = set(app.openapi()["paths"])
     for path in [
         "/health",
         "/diagnostics",
