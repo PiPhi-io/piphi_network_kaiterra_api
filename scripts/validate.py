@@ -6,7 +6,7 @@ from pathlib import Path
 from piphi_network_kaiterra_api.contract import COMMANDS, ENDPOINTS, REQUIRED_ENDPOINTS
 
 ROOT = Path(__file__).resolve().parents[1]
-manifest = json.loads((ROOT / "manifest.json").read_text())
+manifest = json.loads((ROOT / "src" / "manifest.json").read_text())
 dockerfile = (ROOT / "Dockerfile").read_text() if (ROOT / "Dockerfile").exists() else ""
 errors: list[str] = []
 

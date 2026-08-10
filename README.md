@@ -96,7 +96,7 @@ The manifest image is currently:
 docker.io/piphi/piphi-network-kaiterra-api:0.1.0
 ```
 
-Before publishing, update `manifest.json.version` and the Docker image tag, then
+Before publishing, update `src/manifest.json.version` and the Docker image tag, then
 run:
 
 ```bash
