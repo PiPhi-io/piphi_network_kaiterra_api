@@ -3,7 +3,7 @@
   "manifest_version": "1.0",
   "id": "piphi-network-kaiterra-api",
   "name": "PiPhi Network Kaiterra API",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "PiPhi integration runtime for Kaiterra devices using the Kaiterra public API.",
   "metadata": {
     "generator": "piphi-network-create",
@@ -197,5 +197,10 @@
         "default_widget": "tile"
       }
     }
-  ]
+  ],
+  "ui": {
+    "experience_packages": [
+      {"registry_id": "io.piphi.kaiterra-air-quality", "version_range": ">=0.1,<1", "auto_install": true}
+    ]
+  }
 }
