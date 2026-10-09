@@ -18,6 +18,7 @@ SEMVER_RE = re.compile(
 )
 PYPROJECT_VERSION_RE = re.compile(r'(?m)^(version\s*=\s*")([^"]+)(")$')
 PACKAGE_VERSION_RE = re.compile(r'(?m)^\s*"version"\s*:\s*"([^"]+)"')
+EXPERIENCE_VERSION_RE = re.compile(r'("identity"\s*:\s*\{.*?"version"\s*:\s*")[^"]+("\s*\})', re.DOTALL)
 DEFAULT_PREID = "alpha"
 BUMP_CHOICES = (
     "major",
@@ -88,6 +89,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--manifest", default="src/manifest.json")
     parser.add_argument("--pyproject", default="pyproject.toml")
     parser.add_argument("--package-json", default="package.json")
+    parser.add_argument("--experience", default="experiences/air-quality/package.source.json")
     parser.add_argument("--docker-image", default=None)
     parser.add_argument("--no-pin-container-image", action="store_true")
     parser.add_argument("--dry-run", action="store_true")
@@ -255,6 +257,7 @@ def main() -> int:
     manifest_path = resolve_path(repo_root, args.manifest)
     pyproject_path = resolve_path(repo_root, args.pyproject)
     package_path = resolve_path(repo_root, args.package_json)
+    experience_path = resolve_path(repo_root, args.experience)
 
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     manifest_version = SemVer.parse(str(manifest.get("version") or "").strip())
@@ -286,6 +289,14 @@ def main() -> int:
     manifest_path.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
     for path, (text, _version) in version_files:
         write_version_file(path, text, target_version)
+    if experience_path.exists():
+        experience_text = experience_path.read_text(encoding="utf-8")
+        updated_experience, count = EXPERIENCE_VERSION_RE.subn(
+            rf"\g<1>{target_version}\g<2>", experience_text, count=1
+        )
+        if count != 1:
+            raise ValueError(f"Unable to update experience version in {experience_path}")
+        experience_path.write_text(updated_experience, encoding="utf-8")
     print(target_version)
     return 0
 
