@@ -235,7 +235,7 @@ def infer_primary_container_repo(manifest: dict) -> str | None:
 
 def update_primary_container_images(manifest: dict, *, docker_image: str, version: str) -> None:
     tagged_image = f"{docker_image}:{version}"
-    if isinstance(manifest.get("image"), str) and image_repository(manifest["image"]) == docker_image:
+    if isinstance(manifest.get("image"), str):
         manifest["image"] = tagged_image
     runtime = manifest.get("runtime")
     if not isinstance(runtime, dict):
@@ -247,7 +247,7 @@ def update_primary_container_images(manifest: dict, *, docker_image: str, versio
         if not isinstance(container, dict):
             continue
         image = container.get("image")
-        if isinstance(image, str) and image.strip() and image_repository(image) == docker_image:
+        if isinstance(image, str) and image.strip():
             container["image"] = tagged_image
 
 
